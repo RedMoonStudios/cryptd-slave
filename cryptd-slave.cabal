@@ -1,0 +1,41 @@
+Name:                cryptd
+Version:             0.1
+Synopsis:            MoonID encryption daemon (slave server)
+Homepage:            https://github.com/RedMoonStudios/cryptd
+License:             AllRightsReserved
+Author:              RedMoon Studios GmbH & Co KG
+Maintainer:          ssladmin@redmoonstudios.de
+Description:
+    This is the RedMoon Studios encryption daemon, which acts as some kind of
+    tunnel, serializing HTTP API Requests from/to slaves.
+
+    The daemon consists of a master and a slave, where the master is some kind
+    of a metaserver and connection pooler and also monitores slave connections.
+
+    Slaves are built using binaries with placeholders and are added to the
+    masters storage to be built/patched with the placeholder (partner specific
+    stuff and certificates).
+
+    That way, encryption integration and handling certificates becomes quite
+    easy on both sides.
+
+Copyright:           (C) 2011 RedMoon Studios GmbH & Co KG
+Category:            Network
+
+Build-type:          Simple
+Cabal-version:       >= 1.6
+
+Source-repository head
+    Type:            git
+    Location:        git@github.com:RedMoonStudios/cryptd.git
+
+Executable cryptd-slave-template
+    Ghc-options:     -Wall -Werror
+    Main-is:
+        Cryptd/Slave.hs
+    Build-depends:
+        cryptd == 0.1,
+        cmdargs,
+        warp == 1.1.*
+    Other-modules:
+        Cryptd.Slave.CLI
