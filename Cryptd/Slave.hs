@@ -7,7 +7,6 @@ import Network.Wai.Handler.Warp ( runSettings
                                 , Settings(..)
                                 , HostPreference(Host)
                                 )
-import Network.TLS (sendData)
 import qualified Data.ByteString.Lazy.Char8 as LB
 
 import Cryptd.Lib.TLS
