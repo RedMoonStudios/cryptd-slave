@@ -36,11 +36,11 @@ Executable cryptd-slave-template
         Cryptd/Slave.hs
     Build-depends:
         base < 5,
+        cryptd-lib == 0.1,
         bytestring,
         tls,
         stm,
         mtl,
-        cryptd == 0.1,
         cmdargs,
         wai == 1.1.*,
         warp == 1.1.*
