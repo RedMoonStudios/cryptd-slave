@@ -1,4 +1,4 @@
-Name:                cryptd
+Name:                cryptd-slave
 Version:             0.1
 Synopsis:            MoonID encryption daemon (slave server)
 Homepage:            https://github.com/RedMoonStudios/cryptd
@@ -34,8 +34,14 @@ Executable cryptd-slave-template
     Main-is:
         Cryptd/Slave.hs
     Build-depends:
+        base < 5,
+        bytestring,
+        tls,
+        stm,
+        mtl,
         cryptd == 0.1,
         cmdargs,
+        wai == 1.1.*,
         warp == 1.1.*
     Other-modules:
         Cryptd.Slave.CLI
