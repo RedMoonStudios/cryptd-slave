@@ -1,21 +1,31 @@
 {-# LANGUAGE DeriveDataTypeable #-}
+-- | Command line processing for the slave daemon.
 module Cryptd.Slave.CLI (run, SlaveSettings(..)) where
 
 import System.Console.CmdArgs.Implicit
 
 import qualified Cryptd.Lib.ConfigEmbed as Conf
 
+-- | Settings for running the slave daemon.
 data SlaveSettings = SlaveSettings
     { listenAddress :: String
+    -- ^ Host/IP to listen on for the external backend
     , port :: Integer
+    -- ^ Port to listen on for the external backend
     , masterHost :: String
+    -- ^ Host/IP of the master server
     , masterPort :: Integer
+    -- ^ Port of the master server
     , url :: String
+    -- ^ URL for the external backend on incoming requests
     , foreground :: Bool
+    -- ^ Run in foreground
     , instanceId :: Maybe String
+    -- ^ A value distinguishing the slave from other slaves with the same ID
     }
     deriving (Show, Data, Typeable)
 
+-- | Return 'SlaveSettings' annotated for "System.Console.CmdArgs.Implicit".
 slave :: SlaveSettings
 slave = SlaveSettings
     { listenAddress = "127.0.0.1"
@@ -46,5 +56,6 @@ slave = SlaveSettings
   where
     defurl = " (Default: " ++ Conf.url ++ ")"
 
+-- | Parse commandline options.
 run :: IO SlaveSettings
 run = cmdArgs slave

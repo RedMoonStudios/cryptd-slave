@@ -18,6 +18,7 @@ import Cryptd.Lib.Daemonize (daemonize)
 
 import Cryptd.Slave.CLI
 
+-- | The 'Application' handling requests from the external backend.
 app :: TunnelState -> Application
 app ts req = liftIO $ do
     fullReq <- consumeRequest req
@@ -28,9 +29,11 @@ app ts req = liftIO $ do
              ChannelResponse r -> return r
              _ -> retry
 
+-- | Send patched in secret to 'TunnelHandle' and return True on success.
 sendSecret :: TunnelHandle -> IO Bool
 sendSecret h = sendData h (LB.pack secret) >> return True
 
+-- | Send the 'instanceId' to 'TunnelHandle' and return True on success.
 sendInstance :: Maybe String -> TunnelHandle -> IO Bool
 sendInstance i h =
     sendData h (maybeToRaw i) >> return True
@@ -39,9 +42,12 @@ sendInstance i h =
     maybeToRaw (Just v)  = LB.cons' '\001' (LB.pack v)
     maybeToRaw Nothing   = LB.singleton '\000'
 
+-- | Combine 'sendSecret' and 'sendInstance'
 sendInit :: Maybe String -> TunnelHandle -> TunnelState -> IO Bool
 sendInit i h _ = sendSecret h >> sendInstance i h >> return True
 
+-- | Handle parsed commandline arguments from SlaveSettings and if everything is
+-- fine, run the slave daemon.
 dispatch :: SlaveSettings -> IO ()
 dispatch ss = maybeDaemonize (foreground ss) $ do
     (state, handler) <- makeHandler callbacks
