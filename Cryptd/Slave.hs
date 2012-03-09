@@ -52,7 +52,7 @@ dispatch :: SlaveSettings -> IO ()
 dispatch ss = maybeDaemonize (foreground ss) $ do
     (state, handler) <- makeHandler callbacks
     let certs = (publicX509, privateKey)
-    _ <- runTLS connectTo connectPort certs handler
+    _ <- runTLSClient $ makeSettings connectTo connectPort certs handler
     runSettings tlsSettings (app state)
     return ()
   where
@@ -60,7 +60,7 @@ dispatch ss = maybeDaemonize (foreground ss) $ do
     maybeDaemonize False = daemonize "cryptd-slave"
 
     connectTo = masterHost ss
-    connectPort = masterPort ss
+    connectPort = fromIntegral $ masterPort ss
     tlsSettings = defaultSettings
         { settingsHost = Host $ listenAddress ss
         , settingsPort = fromInteger $ port ss
