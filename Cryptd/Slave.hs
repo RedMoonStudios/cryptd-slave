@@ -1,11 +1,11 @@
 import Control.Monad.Trans (liftIO)
 import Control.Concurrent.STM (atomically, retry)
 import Control.Concurrent.STM.TChan
+import Data.Conduit.Network (HostPreference(Host))
 import Network.Wai (Application)
 import Network.Wai.Handler.Warp ( runSettings
                                 , defaultSettings
                                 , Settings(..)
-                                , HostPreference(Host)
                                 )
 import qualified Data.ByteString.Lazy.Char8 as LB
 

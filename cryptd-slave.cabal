@@ -42,7 +42,8 @@ Executable cryptd-slave-template
         stm,
         mtl,
         cmdargs,
-        wai == 1.1.*,
-        warp == 1.1.*
+        wai == 1.2.*,
+        warp == 1.2.*,
+        network-conduit == 0.4.*
     Other-modules:
         Cryptd.Slave.CLI
