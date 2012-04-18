@@ -47,3 +47,4 @@ Executable cryptd-slave-template
         network-conduit == 0.4.*
     Other-modules:
         Cryptd.Slave.CLI
+        Paths_cryptd_slave

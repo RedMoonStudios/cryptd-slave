@@ -6,6 +6,9 @@ import System.Console.CmdArgs.Implicit
 
 import qualified Cryptd.Lib.ConfigEmbed as Conf
 
+import Cryptd.Lib.Util (formatSummary)
+import Paths_cryptd_slave (version)
+
 -- | Settings for running the slave daemon.
 data SlaveSettings = SlaveSettings
     { listenAddress :: String
@@ -51,10 +54,11 @@ slave = SlaveSettings
                    &= argPos 0
     }
     &= program "cryptd-slave"
-    &= summary "MoonID encryption daemon - Slave server"
+    &= sumVer "MoonID encryption daemon - Slave server"
     &= details ["(C) 2012 RedMoon Studios GmbH & Co KG"]
   where
     defurl = " (Default: " ++ Conf.url ++ ")"
+    sumVer = summary . formatSummary version
 
 -- | Parse commandline options.
 run :: IO SlaveSettings
