@@ -1,8 +1,5 @@
 import Control.Monad.Trans (liftIO)
-import Control.Concurrent.STM (atomically, retry)
-import Control.Concurrent.STM.TChan
 import Data.Conduit.Network (HostPreference(Host))
-import Network.Wai (Application)
 import Network.Wai.Handler.Warp ( runSettings
                                 , defaultSettings
                                 , Settings(..)
@@ -15,19 +12,9 @@ import Cryptd.Lib.HTTPSerial (consumeRequest)
 import Cryptd.Lib.Callbacks (requestLoop)
 import Cryptd.Lib.ConfigEmbed (publicX509, privateKey, secret)
 import Cryptd.Lib.Daemonize (daemonize)
+import Cryptd.Lib.Wai (tunnelEntry)
 
 import Cryptd.Slave.CLI
-
--- | The 'Application' handling requests from the external backend.
-app :: TunnelState -> Application
-app ts req = liftIO $ do
-    fullReq <- consumeRequest req
-    atomically $ writeTChan (outChannel ts) (ChannelRequest fullReq)
-    atomically $ do
-        val <- readTChan (inChannel ts)
-        case val of
-             ChannelResponse r -> return r
-             _ -> retry
 
 -- | Send patched in secret to 'TunnelHandle' and return True on success.
 sendSecret :: TunnelHandle -> IO Bool
@@ -56,6 +43,8 @@ dispatch ss = maybeDaemonize (foreground ss) $ do
     runSettings tlsSettings (app state)
     return ()
   where
+    app ts = ((=<<) (tunnelEntry ts) . liftIO . consumeRequest)
+
     maybeDaemonize True = id
     maybeDaemonize False = daemonize "cryptd-slave"
 
