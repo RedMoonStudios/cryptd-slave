@@ -31,7 +31,11 @@ Source-repository head
     Location:        git@github.com:RedMoonStudios/cryptd.git
 
 Executable cryptd-slave-template
-    Ghc-options:     -Wall -pgml=./link-static.py
+    if os(linux)
+        Ghc-options:     -Wall -pgml=./link-static.py
+    else
+        Ghc-options:     -Wall
+
     Main-is:
         Cryptd/Slave.hs
     Build-depends:
