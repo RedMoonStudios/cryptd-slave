@@ -21,7 +21,7 @@ How to install/run
 Just place the downloaded executable in your source folder and execute it prior
 to every request you wish to make to the corresponding application residing on
 the master side. Default options for your specific application should be
-already patched into the binary but can be overridden by a set of commandline
+already patched into the binary but can be overridden by a set of command line
 flags:
 
  * `-l` or `--listenaddress=ADDRESS`
@@ -38,10 +38,10 @@ flags:
  * `-u` or `--url=URL`
 
    The URL where your application handles requests from the the application
-   residing on the masters end.
+   residing on the master's end.
 
-If you don't want the slave server to fork and run in background, you can use
-the `-f` (foreground) flag.
+If you don't want the slave server to fork and run in the background, you can
+use the `-f` (foreground) flag.
 
 To override the instance value of the slave, just provide the new value without
 a specific flag.
